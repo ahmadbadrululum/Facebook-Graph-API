@@ -29,38 +29,47 @@ if (! isset($accessToken)) {
   exit;
 }
 
-echo  'Logged in';
-echo '<h3>Access Token</h3>';
-var_dump($accessToken->getValue());
+die(var_dump($accessToken->getValue()));
+$_SESSION['fb_access'] = $accessToken->getValue();
+// header("location: post.php" );
 
-// The OAuth 2.0 client handler helps us manage access tokens
-$oAuth2Client = $fb->getOAuth2Client();
 
-// Get the access token metadata from /debug_token
-$tokenMetadata = $oAuth2Client->debugToken($accessToken);
-echo '<h3>Metadata</h3>';
-var_dump($tokenMetadata);
+// echo  'Logged in';
+// echo '<h3>Access Token</h3>';
+// var_dump($accessToken->getValue());
 
-// Validation (these will throw FacebookSDKException's when they fail)
-$tokenMetadata->validateAppId($config['app_id']);
-// If you know the user ID this access token belongs to, you can validate it here
-//$tokenMetadata->validateUserId('123');
-$tokenMetadata->validateExpiration();
+// $_SESSION['fb_access_token'] = (string) $accessToken;
+// header("location: post.php" );
 
-if (! $accessToken->isLongLived()) {
-  // Exchanges a short-lived access token for a long-lived one
-  try {
-    $accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
-  } catch (Facebook\Exceptions\FacebookSDKException $e) {
-    echo "<p>Error getting long-lived access token: " . $e->getMessage() . "</p>\n\n";
-    exit;
-  }
+// // The OAuth 2.0 client handler helps us manage access tokens
+// $oAuth2Client = $fb->getOAuth2Client();
 
-  echo '<h3>Long-lived</h3>';
-  var_dump($accessToken->getValue());
-}
+// // Get the access token metadata from /debug_token
+// $tokenMetadata = $oAuth2Client->debugToken($accessToken);
+// echo '<h3>Metadata</h3>';
+// var_dump($tokenMetadata);
 
-$_SESSION['fb_access_token'] = (string) $accessToken;
+// // Validation (these will throw FacebookSDKException's when they fail)
+// $tokenMetadata->validateAppId($config['app_id']);
+// // If you know the user ID this access token belongs to, you can validate it here
+// //$tokenMetadata->validateUserId('123');
+// $tokenMetadata->validateExpiration();
+
+// if (! $accessToken->isLongLived()) {
+//   // Exchanges a short-lived access token for a long-lived one
+//   try {
+//     $accessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
+//   } catch (Facebook\Exceptions\FacebookSDKException $e) {
+//     echo "<p>Error getting long-lived access token: " . $e->getMessage() . "</p>\n\n";
+//     exit;
+//   }
+
+//   echo '<h3>Long-lived</h3>';
+//   var_dump($accessToken->getValue());
+// }
+
+// $_SESSION['fb_access_token'] = (string) $accessToken;
+// header("location: post.php" );
 
 // User is logged in with a long-lived access token.
 // You can redirect them to a members-only page.
